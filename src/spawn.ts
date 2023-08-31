@@ -196,10 +196,6 @@ export function startCollator(
 		const { basePath, name, onlyOneParachainNode, flags, spec, chain } =
 			options;
 
-		if (rpcPort) {
-			args.push("--rpc-port=" + rpcPort);
-			console.log(`Added --rpc-port=" + ${rpcPort}`);
-		}
 		args.push("--collator");
 
 		if (basePath) {
