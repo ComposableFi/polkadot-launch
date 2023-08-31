@@ -252,8 +252,7 @@ export function startCollator(
 		p[rpcPort].stderr.on("data", function (chunk) {
 			let message = chunk.toString();
 			let ready =
-				message.includes("Running JSON-RPC WS server:") ||
-				message.includes("Listening for new connections");
+				message.includes("Running JSON-RPC server:");
 			if (ready) {
 				resolve();
 			}
