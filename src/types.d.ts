@@ -16,8 +16,7 @@ export interface LaunchConfig {
 	finalization: boolean;
 }
 export interface ParachainNodeConfig {
-	rpcPort?: number;
-	wsPort: number;
+	rpcPort: number;
 	port: number;
 	basePath?: string;
 	name?: string;
@@ -51,8 +50,7 @@ export interface RelayChainConfig {
 	nodes: {
 		name: string;
 		basePath?: string;
-		wsPort: number;
-		rpcPort?: number;
+		rpcPort: number;
 		nodeKey?: string;
 		port: number;
 		flags?: string[];

@@ -41,7 +41,6 @@ export async function findAvailablePorts(parachainCount: number = 1) {
 	return new Array(nodeCount).fill(0).map((_, index) => ({
 		p2pPort: availablePorts[index * 3 + 0],
 		rpcPort: availablePorts[index * 3 + 1],
-		wsPort: availablePorts[index * 3 + 2],
 	}));
 }
 
@@ -54,10 +53,10 @@ let nodeStarted = false;
 export type ParachainOptions = {
 	chain: "rococo-local";
 	relaychain?:
-		| "rococo-local"
-		| "westend-local"
-		| "kusama-local"
-		| "polkadot-local";
+	| "rococo-local"
+	| "westend-local"
+	| "kusama-local"
+	| "polkadot-local";
 	numberOfParachains?: number;
 };
 
@@ -69,7 +68,6 @@ export interface ParachainPorts {
 export interface NodePorts {
 	p2pPort: number;
 	rpcPort: number;
-	wsPort: number;
 }
 
 export interface HrmpChannel {
@@ -133,7 +131,6 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
 					name: RELAY_CHAIN_NODE_NAMES[i],
 					port: ports[i].p2pPort,
 					rpcPort: ports[i].rpcPort,
-					wsPort: ports[i].wsPort,
 				};
 			}),
 			genesis: {
@@ -158,7 +155,6 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
 					{
 						port: ports[i * 2 + numberOfParachains + 1].p2pPort,
 						rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-						wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
 						name: "alice",
 						flags: [
 							"--log=info,rpc=trace,evm=trace,ethereum=trace",
@@ -171,7 +167,6 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
 					{
 						port: ports[i * 2 + numberOfParachains + 2].p2pPort,
 						rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-						wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
 						name: "bob",
 						flags: [
 							"--log=info,rpc=trace,evm=trace,ethereum=trace",
@@ -207,7 +202,6 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
 			return {
 				p2pPort: ports[i].p2pPort,
 				rpcPort: ports[i].rpcPort,
-				wsPort: ports[i].wsPort,
 			};
 		}),
 
@@ -218,12 +212,10 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
 					{
 						p2pPort: ports[i * 2 + numberOfParachains + 1].p2pPort,
 						rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-						wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
 					},
 					{
 						p2pPort: ports[i * 2 + numberOfParachains + 2].p2pPort,
 						rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-						wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
 					},
 				],
 			};

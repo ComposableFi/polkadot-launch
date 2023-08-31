@@ -60,20 +60,19 @@ export function describeParachain(
 			const init = !DEBUG_MODE
 				? await startParachainNodes(options)
 				: {
-						paraPorts: [
-							{
-								parachainId: 1000,
-								ports: [
-									{
-										p2pPort: 19931,
-										wsPort: 19933,
-										rpcPort: 19932,
-									},
-								],
-							},
-						],
-						relayPorts: [],
-				  };
+					paraPorts: [
+						{
+							parachainId: 1000,
+							ports: [
+								{
+									p2pPort: 19931,
+									rpcPort: 19932,
+								},
+							],
+						},
+					],
+					relayPorts: [],
+				};
 			// Context is given prior to this assignement, so doing
 			// context = init.context will fail because it replace the variable;
 
@@ -84,7 +83,7 @@ export function describeParachain(
 			context.createWeb3 = async (protocol: "ws" | "http" = "http") => {
 				const provider =
 					protocol == "ws"
-						? await provideWeb3Api(init.paraPorts[0].ports[0].wsPort, "ws")
+						? await provideWeb3Api(init.paraPorts[0].ports[0].rpcPort, "ws")
 						: await provideWeb3Api(init.paraPorts[0].ports[0].rpcPort, "http");
 				context._web3Providers.push((provider as any)._provider);
 				return provider;
@@ -98,7 +97,7 @@ export function describeParachain(
 							parachainId: parachain.parachainId,
 							apis: await Promise.all(
 								parachain.ports.map(async (ports: NodePorts) => {
-									return providePolkadotApi(ports.wsPort);
+									return providePolkadotApi(ports.rpcPort);
 								})
 							),
 						};
@@ -122,7 +121,7 @@ export function describeParachain(
 			context.createPolkadotApiRelaychains = async () => {
 				const apiPromises = await Promise.all(
 					init.relayPorts.map(async (ports: NodePorts) => {
-						return await providePolkadotApi(ports.wsPort);
+						return await providePolkadotApi(ports.rpcPort);
 					})
 				);
 				// We keep track of the polkadotApis to close them at the end of the test
@@ -143,11 +142,11 @@ export function describeParachain(
 			context.ethers = await context.createEthers();
 			debug(
 				`Setup ready [${
-					//@ts-ignore
-					/:([0-9]+)$/.exec((context.web3.currentProvider as any).host)[1]
+				//@ts-ignore
+				/:([0-9]+)$/.exec((context.web3.currentProvider as any).host)[1]
 				}] for ${
-					//@ts-ignore
-					this.currentTest.title
+				//@ts-ignore
+				this.currentTest.title
 				}`
 			);
 		});
